@@ -15,7 +15,7 @@ HEADERS = headers = {
 }
 QUERY = '\nquery PlayerStatisticDefault($player: ID, $leagueType: LeagueType, $sort: String) {\n  playerStats(player: $player, statsType: "default,projected", leagueType: $leagueType, sort: $sort) {\n    edges {\n      id\n      player {\n \n detailedPosition \n name\n        position\n        shoots\n        weight{\n      imperial\n      metrics\n    }\n height{\n      imperial\n      metrics\n    }}\n      statsProvider {\n        logoUrl\n        name\n        statsName\n        url\n      }\n      season {\n        slug\n        startYear\n        endYear\n      }\n      statsType\n      team {\n        continent\n        eliteprospectsUrlPath\n        country {\n          eliteprospectsUrlPath\n          flagUrl {\n            small\n          }\n        }\n      }\n      teamName\n      playerRole\n      status\n      contractType\n      league {\n        eliteprospectsUrlPath\n        flagUrl {\n          small\n        }\n      }\n      leagueName\n      regularStats {\n        GP\n        G\n        A\n        PTS\n        PIM\n        PM\n        GAA\n        SVP\n        SVS\n        SO\n        W\n        L\n        T\n        GD\n        GA\n        TOI\n      }\n      postseasonName\n      postseasonType\n      postseasonStats {\n        GP\n        A\n        G\n        PTS\n        PIM\n        PM\n        GAA\n        SVP\n        SVS\n        SO\n        W\n        L\n        T\n        GD\n        GA\n        TOI\n      }\n    }\n  }\n}\n'
 
-VALID_LEAGUES = ["NHL", "OHL", "QMJHL", "USHL", "WHL"]
+# VALID_LEAGUES = ["NHL", "OHL", "QMJHL", "USHL", "WHL"]
 
 def sendRequest(playerID):
     eliteProspectsPayloadData = {"operationName":"PlayerStatisticDefault","variables":{"player":playerID,"leagueType":"league","sort":"season"},"query": QUERY}
@@ -23,10 +23,10 @@ def sendRequest(playerID):
         return client.post(URL, json=eliteProspectsPayloadData)
 
 
-
 def main():
-    with open("playerData.txt", mode="x") as file: #TODO change mode to x
-        for playerID in [6146, 785522, 577184]: #range(577184, 577185)
+    with open("playerData.txt", mode="x",encoding="utf-8") as file:
+        for playerID in range(1,100):
+            print(playerID)
             # get data
             response = sendRequest(playerID)
             if response.is_success:
@@ -44,19 +44,30 @@ def main():
                         playerStats["position"] = player.get("position")
                         playerStats["detailedPosition"] = player.get("detailedPosition")
                         playerStats["shoots"] = player.get("shoots")
-                        playerStats["height"] = player.get("height", {}).get("metrics", {}) #cm
-                        playerStats["weight"] = player.get("weight", {}).get("metrics", {}) #kg
+                        if player.get("height", {}):
+                            playerStats["height"] = player.get("height", {}).get("metrics", {}) #cm
+                        if player.get("weight", {}):
+                            playerStats["weight"] = player.get("weight", {}).get("metrics", {}) #kg
+                    else:
+                        continue
                     
+                    if playerStats["position"] == 'G':
+                        continue
+
                     # itterate though each season played and collect stats about it
                     playerStats["seasonStats"] = []
+
+                    inNHL = False
                     for season in seasons:
                         team = season.get("teamName")
                         league = season.get("leagueName")
+                        if league == "NHL":
+                            inNHL = True
                         status = season.get("status")
                         year = season.get("season", {}).get("slug")
 
                         # Potentially remove check for valid leagues
-                        if season.get("regularStats") and league in VALID_LEAGUES and team:
+                        if season.get("regularStats") and team:
                             gamesPlayed = season.get("regularStats", {}).get("GP")
                             goals = season.get("regularStats", {}).get("G")
                             assists = season.get("regularStats", {}).get("A")
@@ -76,10 +87,8 @@ def main():
                                 "plusMinus": plusMinus
                             }
                             playerStats["seasonStats"].append(seasonStats)
-                            # print stats
-                            # print(f"team: {team}\nleague: {league}\nstatus: {status}\nyear: {year}")
-                            # print(f'''Stats:\n\tGames Played: {gamesPlayed}\n\tGoals: {goals}\n\tAssists: {assists}\n\tPoints: {points}\n\tPenalty Minutes: {penaltyMins}\n\t+\-: {plusMinus}\n''')
-                    file.write(json.dumps(playerStats)+"\n")
+                    if inNHL:
+                        file.write(json.dumps(playerStats, ensure_ascii=False)+"\n")
                 except (TypeError, AttributeError) as e:
                     print(e)
             else:
