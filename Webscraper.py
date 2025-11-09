@@ -1,5 +1,6 @@
 import json
 import httpx
+import sys
 
 # ushlurl = 'https://ushl.com/ht/#/player/' #followed by a player id starting at 1
 URL = 'https://www.eliteprospects.com'
@@ -24,8 +25,9 @@ def sendRequest(playerID):
 
 
 def main():
-    with open("playerData.txt", mode="x",encoding="utf-8") as file:
-        for playerID in range(1,100):
+    with open(f"data\\playerDataIDs{sys.argv[1]}-{sys.argv[2]}.txt", mode="x",encoding="utf-8") as file:
+        for playerID in range(max(int(sys.argv[1]),1),int(sys.argv[2]) + 1):
+        # for playerID in range(1, 100):
             print(playerID)
             # get data
             response = sendRequest(playerID)
