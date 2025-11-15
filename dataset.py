@@ -2,10 +2,9 @@ import torch
 from torch.utils.data import Dataset
 
 class NHLDataset(Dataset):
-    def __init__(self, data_list, transform=None, target_transform=None):
-        # TODO change how data is loaded
-        self.x = [[1.0, 2.0, 3.0], [3.0, 4.0, 5.0], [5.0, 6.0, 7.0]]
-        self.y = [[0.0, 1.0], [2.0, 3.0], [4.0, 5.0]]
+    def __init__(self, input_features, output_labels, transform=None, target_transform=None):
+        self.x = input_features
+        self.y = output_labels
         self.transform = transform
         self.target_transform = target_transform
 
