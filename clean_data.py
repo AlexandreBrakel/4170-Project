@@ -57,10 +57,10 @@ def clean_player_data(
                 original_seasons = player_data.get("seasonStats", [])
                 total_seasons_before += len(original_seasons)
                 
-                # only valid leagues
+                # only valid leagues and seasons with games played
                 filtered_seasons = [
                     season for season in original_seasons
-                    if season.get("league") in valid_leagues_set
+                    if season.get("league") in valid_leagues_set and season.get("gamesPlayed") and season.get("gamesPlayed") > 0
                 ]
                 
                 total_nhl_games = sum(
