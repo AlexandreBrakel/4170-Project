@@ -15,7 +15,6 @@ class MLP(nn.Module):
         if use_batch_norm:
             layers.append(nn.BatchNorm1d(hidden_size))
         layers.append(activation)
-        layers.append(nn.Dropout(0.2))
         
         # Additional hidden layers
         for _ in range(num_hidden_layers):
