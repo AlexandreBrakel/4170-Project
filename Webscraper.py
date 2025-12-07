@@ -128,6 +128,7 @@ def main():
     with open(f"playerData.txt", mode="w",encoding="utf-8") as file:
         for playerID in validIDs:
             getPlayerData(file, playerID)
+    print("done")
             
 
 if __name__ == '__main__':
