@@ -1,8 +1,6 @@
 import json
 import httpx
-import sys
 
-# ushlurl = 'https://ushl.com/ht/#/player/' #followed by a player id starting at 1
 URL = 'https://www.eliteprospects.com'
 HEADERS = headers = {
 "Host": "gql.eliteprospects.com",
@@ -19,9 +17,6 @@ QUERY = '\nquery PlayerStatisticDefault($player: ID, $leagueType: LeagueType, $s
 
 SecondQuery = 'query Players($limit: Int, $sort: String, $offset: Int) {\n  players(offset: $offset limit: $limit hasPlayedInLeague: "nhl", sort: $sort) {\n    edges {\n      name\n   id     }}}'
 
-
-# VALID_LEAGUES = ["NHL", "OHL", "QMJHL", "USHL", "WHL"]
-
 def sendRequest(playerID):
     eliteProspectsPayloadData = {"operationName":"PlayerStatisticDefault","variables":{"player":playerID,"leagueType":"league","sort":"season"},"query": QUERY}
     with httpx.Client(http2=True, headers=HEADERS) as client:
@@ -37,7 +32,6 @@ def fetchValidPlayerIDs():
             eliteProspectsPayloadData = {"variables":{"sort": "name", "limit":100, "offset": offset}, "query": SecondQuery}
             with httpx.Client(http2=True, headers=HEADERS) as client:
                 response = client.post(URL, json=eliteProspectsPayloadData)
-                # print(response.text)
                 if response.is_success:
                     # parse data
                     try:
@@ -60,7 +54,6 @@ def getPlayerData(file, playerID, tries=0):
             # parse data
             try:
                 playerData = json.loads(response.text)
-                # print(playerData)
                 seasons = playerData.get("data", {}).get("playerStats", {}).get("edges", {})
 
                 # get player info
@@ -131,16 +124,10 @@ def getPlayerData(file, playerID, tries=0):
 def main():
     print("fetching valid player IDs")
     validIDs = fetchValidPlayerIDs()
-    # print(f"Scraping player data from ID {sys.argv[1]} to {sys.argv[2]}")
-    # with open(f"data\\playerDataIDs{sys.argv[1]}-{sys.argv[2]}.txt", mode="w",encoding="utf-8") as file:
     print("scraping player data")
-    with open(f"playerData.txt", mode="x",encoding="utf-8") as file:
-        # for playerID in range(max(int(sys.argv[1]),1),int(sys.argv[2]) + 1):
+    with open(f"playerData.txt", mode="w",encoding="utf-8") as file:
         for playerID in validIDs:
             getPlayerData(file, playerID)
-            # if playerID % 100 == 0 : print(f"reached id {playerID}")
-            # print(f"Scraping data for player ID {playerID}")
-            # get data
             
 
 if __name__ == '__main__':
