@@ -1,5 +1,7 @@
 # 4170-Project Group 13
 
+Raw dataset called `playerData.txt` and the cleaned dataset (which includes engineered feature) called `playerData_features.txt` can be accessed at `https://github.com/AlexandreBrakel/4170-Project.git`
+
 Our implementation consists of 6 files 
  - `Webscraper.py` - Python file the scrapes https://www.eliteprospects.com to colect data on all players who have played in the NHL
  - `clean_data.py` - Python file that performs preliminary cleaning to the data. ie remove seasons without any games player, remove seaosn played in invalid leagues and remove players who have not played 30 nhl games. 
