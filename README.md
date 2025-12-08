@@ -19,7 +19,7 @@ To run our python files you will need to have the following python libraries ins
 To execute our code follow these steps
 
 ### **1** 
-First you run `Webscraper.py` to collect the data which can be done by running 
+First you run `Webscraper.py` to collect the data which can be done by running the following in your command line
 ```
 python Webscraper.py
 ```
@@ -68,7 +68,7 @@ python3 feature_engineering.py inputfilename outputfilename
 ```
 
 ### **4**
-Finally you can run `train.py` by running
+Finally you can run `train.py` as follows in the command line
 ```
 python train.py
 ```
