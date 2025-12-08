@@ -1,6 +1,6 @@
 # 4170-Project Group 13
 
-Raw dataset called `playerData.txt` and the cleaned dataset (which includes engineered feature) called `playerData_features.txt` can be accessed at `https://github.com/AlexandreBrakel/4170-Project.git`
+Raw dataset called `playerData.txt` and the cleaned dataset (which includes engineered features) called `playerData_features.txt` can be accessed at `https://github.com/AlexandreBrakel/4170-Project.git`
 
 Our implementation consists of 6 files 
  - `Webscraper.py` - Python file the scrapes https://www.eliteprospects.com to colect data on all players who have played in the NHL
