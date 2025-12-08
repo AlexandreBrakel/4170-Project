@@ -4,19 +4,16 @@ Our implementation consists of 6 files
  - `Webscraper.py` - Python file the scrapes https://www.eliteprospects.com to colect data on all players who have played in the NHL
  - `clean_data.py` - Python file that performs preliminary cleaning to the data. ie remove seasons without any games player, remove seaosn played in invalid leagues and remove players who have not played 30 nhl games. 
  - `feature_engineering.py` - Python file that creates per-game rate features and normalizes games played.
- - `train.ipynb` - Jupyter notebook which has some additonal feature engineering, then it creates our model, trains our model and evaluate's our model. 
- - `neural.py` - Python files containing our custom torch.nn module for our MLP model. It defining the structure of the model to be used in `train.ipynb`.
- - `dataset.py` - Python files containing a custom torch dataset which we use for feeding input value and output labels to our in `train.ipynb`.
+ - `train.py` - Jupyter notebook which has some additonal feature engineering, then it creates our model, trains our model and evaluate's our model. 
+ - `neural.py` - Python files containing our custom torch.nn module for our MLP model. It defining the structure of the model to be used in `train.py`.
+ - `dataset.py` - Python files containing a custom torch dataset which we use for feeding input value and output labels to our in `train.py`.
 
 To run our python files you will need to have the following python libraries installed.
 - torch - install using `pip install torch torchvision torchaudio`
 - matplotlib - install using `pip install matplotlib`
 - sklearn - install using `pip install scikit-learn`
 - httpx - install using `pip install httpx`
-- pathlib (if python version before python 3.4) - install using `pip install pathlib` 
-- jupyter - install using `pip install jupyter`
-
-
+- pathlib (if python version before python 3.4) - install using `pip install pathlib`
 
 
 To execute our code follow these steps
@@ -71,9 +68,11 @@ python3 feature_engineering.py inputfilename outputfilename
 ```
 
 ### **4**
-Finally there are 2 ways to run `train.ipynb`
-
-#### A
-If you use VS code as your IDE then you can i insatll the offical Jupyter extension from Microsoft, then you can open the `train.ipynb` file and click `Run All` at the top of the file.
-
-#### B
+Finally you can run `train.py` by running
+```
+python train.py
+```
+or
+```
+python3 train.py
+```
