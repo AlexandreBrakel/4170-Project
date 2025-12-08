@@ -84,8 +84,7 @@ with open(f"playerData_features.txt", mode="r",encoding="utf-8") as file:
             player_input_features.append(nonnhl_plusMinus/num_nonnhl_plusMinus)
         else:
             player_input_features.append(0)
-        player_output_labels.extend(nhl_seasons.tolist()[1:3])
-        # player_output_labels.extend(nhl_seasons.tolist())
+        player_output_labels.extend(nhl_seasons.tolist()[1:3]) # only use goals and assists
 
 
         input_features.append(player_input_features)
